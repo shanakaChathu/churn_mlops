@@ -27,11 +27,16 @@ stages:
     params:
     - random_forest.max_depth
     - random_forest.max_features
+    - random_forest.n_estimators
 
   log_production_model:
     cmd: python src/models/log_production_model.py --config=params.yaml
     deps:
     - src/models/log_production_model.py
+    params:
+    - random_forest.max_depth
+    - random_forest.max_features
+    - random_forest.n_estimators
     outs:
     - models/model.joblib
 

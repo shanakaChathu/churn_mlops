@@ -19,6 +19,7 @@ model_dir: models/model.joblib
 random_forest: 
   max_depth: 2
   max_features: 2
+  n_estimators: 20
 
 mlflow_config:
   artifacts_dir: artifacts

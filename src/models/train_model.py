@@ -64,6 +64,7 @@ def train_and_evaluate(config_path):
     target = config["raw_data_config"]["target"]
     max_depth=config["random_forest"]["max_depth"]
     max_features=config["random_forest"]["max_features"]
+    n_estimators=config["random_forest"]["n_estimators"]
 
     train = pd.read_csv(train_data_path, sep=",")
     test = pd.read_csv(test_data_path, sep=",")
@@ -85,7 +86,7 @@ def train_and_evaluate(config_path):
 
     with mlflow.start_run(run_name=mlflow_config["run_name"]) as mlops_run:
         print(3)
-        model = RandomForestClassifier(max_depth=max_depth,max_features=max_features)
+        model = RandomForestClassifier(max_depth=max_depth,max_features=max_features,n_estimators=n_estimators)
         model.fit(train_x, train_y)
         y_pred = model.predict(test_x)
         accuracy,precision,recall,f1score = accuracymeasures(test_y,y_pred)

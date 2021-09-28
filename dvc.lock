@@ -45,22 +45,28 @@ stages:
       md5: 5821af312e680407f3472f56e405e9bc
       size: 219447
     - path: src/models/train_model.py
-      md5: ef333f57950729f69601eabc4b8d8c68
-      size: 4345
+      md5: f6b8967573126d37339cdb02d12b629e
+      size: 4429
     params:
       params.yaml:
         random_forest.max_depth: 2
         random_forest.max_features: 2
+        random_forest.n_estimators: 20
   log_production_model:
     cmd: python src/models/log_production_model.py --config=params.yaml
     deps:
     - path: src/models/log_production_model.py
-      md5: 05777c1315dd3d153303438f0557cd13
+      md5: f13ba0fcfe1f9cbf4899747c1de35fed
       size: 1738
+    params:
+      params.yaml:
+        random_forest.max_depth: 2
+        random_forest.max_features: 2
+        random_forest.n_estimators: 20
     outs:
     - path: models/model.joblib
-      md5: 1766d66d3f17293b62f490025dcc0610
-      size: 1881626
+      md5: b91a39d649eb5a4cf20799e79ea1eae2
+      size: 85928
   prediction_service:
     cmd: python src/prediction_service/prediction.py --config=params.yaml
     deps:
@@ -68,15 +74,15 @@ stages:
       md5: 9fa5eb634e0fae0ea97554fbb4926827
       size: 59063
     - path: models/model.joblib
-      md5: 1766d66d3f17293b62f490025dcc0610
-      size: 1881626
+      md5: b91a39d649eb5a4cf20799e79ea1eae2
+      size: 85928
     - path: src/prediction_service/prediction.py
       md5: 907516105ea885d1db8601060bc74987
       size: 1383
     outs:
     - path: data/prediction/prediction.csv
-      md5: 27f3e3f6f5c60cb85caf66f568358bfa
-      size: 61045
+      md5: 4d016ca99f60b33439c2510015ae50c4
+      size: 60985
   model_monitor:
     cmd: python src/model_monitoring/model_monitor.py --config=params.yaml
     deps:
