@@ -1,5 +1,3 @@
-# split the raw data 
-# save it in data/processed folder
 import os
 import argparse
 import pandas as pd
@@ -7,6 +5,11 @@ from get_data import read_params
 from sklearn.model_selection import train_test_split
 
 def split_and_saved_data(config_path):
+    """
+    split the train dataset(data/raw) and save it in the data/processed folder
+    input: config path 
+    output: save splitted files in output folder
+    """
     config = read_params(config_path)
     test_data_path = config["raw_data_config"]["test_data_csv"] 
     train_data_path = config["raw_data_config"]["train_data_csv"]
