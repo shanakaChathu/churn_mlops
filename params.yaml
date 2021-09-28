@@ -12,7 +12,10 @@ raw_data_config:
   train_data_csv: data/processed/churn_train.csv
   test_data_csv:  data/processed/churn_test.csv
   train_test_split_ratio: 0.2
+  target: churn 
   
+model_dir: models
+
 
   
 
