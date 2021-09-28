@@ -57,3 +57,7 @@ stages:
     - path: src/models/log_production_model.py
       md5: 05777c1315dd3d153303438f0557cd13
       size: 1738
+    outs:
+    - path: models/model.joblib
+      md5: 1766d66d3f17293b62f490025dcc0610
+      size: 1881626

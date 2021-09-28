@@ -37,5 +37,7 @@ stages:
     cmd: python src/models/log_production_model.py --config=params.yaml
     deps:
     - src/models/log_production_model.py
+    outs:
+    - models/model.joblib
 
   
