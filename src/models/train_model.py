@@ -45,6 +45,8 @@ def accuracymeasures(y_test,predictions):
     print("Recall: ", recall)
     print("F1 Score: ", f1score)
 
+    return accuracy,precision,recall,f1score
+
 def get_feat_and_target(df,target):
     """
     Get features and target variables seperately from given dataframe and target 
@@ -60,7 +62,8 @@ def train_and_evaluate(config_path):
     test_data_path = config["raw_data_config"]["test_data_csv"] 
     train_data_path = config["raw_data_config"]["train_data_csv"]
     target = config["raw_data_config"]["target"]
-    #model_dir = config["model_dir"]
+    max_depth=config["random_forest"]["max_depth"]
+    max_features=config["random_forest"]["max_features"]
 
     train = pd.read_csv(train_data_path, sep=",")
     test = pd.read_csv(test_data_path, sep=",")
@@ -73,15 +76,44 @@ def train_and_evaluate(config_path):
     train_x,train_y=get_feat_and_target(train,target)
     test_x,test_y=get_feat_and_target(test,target)
 
-    rfc = RandomForestClassifier()
-    rfc.fit(train_x, train_y)
-    y_pred = rfc.predict(test_x)
+    
+################### MLFLOW ###############################
+    mlflow_config = config["mlflow_config"]
+    remote_server_uri = mlflow_config["remote_server_uri"]
 
-    accuracymeasures(test_y,y_pred)
+    mlflow.set_tracking_uri(remote_server_uri)
+    mlflow.set_experiment(mlflow_config["experiment_name"])
+
+    with mlflow.start_run(run_name=mlflow_config["run_name"]) as mlops_run:
+        print(3)
+        model = RandomForestClassifier(max_depth=max_depth,max_features=max_features,)
+        model.fit(train_x, train_y)
+        y_pred = model.predict(test_x)
+        accuracy,precision,recall,f1score = accuracymeasures(test_y,y_pred)
+
+        mlflow.log_param("max_depth",max_depth)
+        mlflow.log_param("max_features", max_features)
+
+        mlflow.log_metric("accuracy", accuracy)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall)
+        mlflow.log_metric("f1_score", f1score)
+       
+        tracking_url_type_store = urlparse(mlflow.get_artifact_uri()).scheme
+
+        if tracking_url_type_store != "file":
+            mlflow.sklearn.log_model(
+                model, 
+                "model", 
+                registered_model_name=mlflow_config["registered_model_name"])
+        else:
+            mlflow.sklearn.load_model(model, "model")
  
 if __name__=="__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--config", default="params.yaml")
     parsed_args = args.parse_args()
     train_and_evaluate(config_path=parsed_args.config)
+
+
 

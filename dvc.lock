@@ -26,8 +26,8 @@ stages:
       md5: e7e56c645b29ef0eec041e1293327ed1
       size: 274282
     - path: src/data/split_data.py
-      md5: 79cd3a7cfbf58d71744554d2c25a2acb
-      size: 1128
+      md5: 90ef0074352427cd41b1b8e41796eb74
+      size: 1242
     outs:
     - path: data/processed/churn_test.csv
       md5: cbe461f611a83ee82666622dbaee8e2b
@@ -35,3 +35,25 @@ stages:
     - path: data/processed/churn_train.csv
       md5: 5821af312e680407f3472f56e405e9bc
       size: 219447
+  train_and_evaluate:
+    cmd: python src/models/train_model.py --config=params.yaml
+    deps:
+    - path: data/processed/churn_test.csv
+      md5: cbe461f611a83ee82666622dbaee8e2b
+      size: 55173
+    - path: data/processed/churn_train.csv
+      md5: 5821af312e680407f3472f56e405e9bc
+      size: 219447
+    - path: src/models/train_model.py
+      md5: db505bd892c41055055a99f44489c12f
+      size: 4348
+    params:
+      params.yaml:
+        random_forest.max_depth: 1
+        random_forest.max_features: 1
+  log_production_model:
+    cmd: python src/models/log_production_model.py --config=params.yaml
+    deps:
+    - path: src/models/log_production_model.py
+      md5: 05777c1315dd3d153303438f0557cd13
+      size: 1738
