@@ -1,0 +1,10 @@
+stages:
+  raw_dataset_creation:
+    cmd: python src/data/raw_dataset_creation.py --config=params.yaml
+    deps:
+    - src/data/raw_dataset_creation.py
+    - data/external/train.csv
+    outs:
+    - data/raw/train.csv
+    - data/raw/test_week1.csv
+    - data/raw/test_week2.csv 

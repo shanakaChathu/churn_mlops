@@ -1,0 +1,21 @@
+schema: '2.0'
+stages:
+  raw_dataset_creation:
+    cmd: python src/data/raw_dataset_creation.py --config=params.yaml
+    deps:
+    - path: data/external/train.csv
+      md5: 8929517566f004183dff480fdd48afe0
+      size: 391872
+    - path: src/data/raw_dataset_creation.py
+      md5: 23b6a2e834f0f65b79b8ead91f60049f
+      size: 2678
+    outs:
+    - path: data/raw/test_week1.csv
+      md5: 9fa5eb634e0fae0ea97554fbb4926827
+      size: 59063
+    - path: data/raw/test_week2.csv
+      md5: 241aea5f0c5951d7a3bb5f118a60e6a5
+      size: 59203
+    - path: data/raw/train.csv
+      md5: e7e56c645b29ef0eec041e1293327ed1
+      size: 274282

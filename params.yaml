@@ -1,0 +1,12 @@
+external_data_config:
+  external_data_csv: data/external/train.csv
+  target: churn 
+  split_ratio_train: 0.3
+  split_ratio_test: 0.5
+  raw_train: data/raw/train.csv
+  raw_test_week1: data/raw/test_week1.csv
+  raw_test_week2: data/raw/test_week2.csv
+
+  
+
+
