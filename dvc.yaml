@@ -1,10 +1,19 @@
 stages:
   raw_dataset_creation:
-    cmd: python src/data/raw_dataset_creation.py --config=params.yaml
+    cmd: python src/data/get_data.py --config=params.yaml
     deps:
-    - src/data/raw_dataset_creation.py
+    - src/data/get_data.py
     - data/external/train.csv
     outs:
     - data/raw/train.csv
     - data/raw/test_week1.csv
     - data/raw/test_week2.csv 
+  
+  split_data:
+    cmd: python src/data/split_data.py --config=params.yaml
+    deps:
+    - src/data/split_data.py
+    - data/raw/train.csv
+    outs:
+    - data/processed/churn_train.csv
+    - data/processed/churn_test.csv
