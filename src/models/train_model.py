@@ -59,8 +59,8 @@ def get_feat_and_target(df,target):
 
 def train_and_evaluate(config_path):
     config = read_params(config_path)
-    test_data_path = config["raw_data_config"]["test_data_csv"] 
     train_data_path = config["raw_data_config"]["train_data_csv"]
+    test_data_path = config["raw_data_config"]["test_data_csv"]
     target = config["raw_data_config"]["target"]
     max_depth=config["random_forest"]["max_depth"]
     max_features=config["random_forest"]["max_features"]
@@ -74,8 +74,7 @@ def train_and_evaluate(config_path):
     test=test[num_var]
 
     train_x,train_y=get_feat_and_target(train,target)
-    test_x,test_y=get_feat_and_target(test,target)
-
+    test_x,test_y=get_feat_and_target(train,target)
     
 ################### MLFLOW ###############################
     mlflow_config = config["mlflow_config"]
@@ -86,7 +85,7 @@ def train_and_evaluate(config_path):
 
     with mlflow.start_run(run_name=mlflow_config["run_name"]) as mlops_run:
         print(3)
-        model = RandomForestClassifier(max_depth=max_depth,max_features=max_features,)
+        model = RandomForestClassifier(max_depth=max_depth,max_features=max_features)
         model.fit(train_x, train_y)
         y_pred = model.predict(test_x)
         accuracy,precision,recall,f1score = accuracymeasures(test_y,y_pred)

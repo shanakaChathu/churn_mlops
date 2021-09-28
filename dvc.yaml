@@ -27,17 +27,21 @@ stages:
     params:
     - random_forest.max_depth
     - random_forest.max_features
-    # metrics:
-    # - report/scores.json:
-    #     cache: false
-    # - report/params.json:
-    #     cache: false
-    
+
   log_production_model:
     cmd: python src/models/log_production_model.py --config=params.yaml
     deps:
     - src/models/log_production_model.py
     outs:
     - models/model.joblib
+
+  prediction_service:
+    cmd: python src/prediction_service/prediction.py --config=params.yaml
+    deps:
+    - src/prediction_service/prediction.py
+    - models/model.joblib
+    - data/raw/test_week1.csv
+    outs:
+    - data/prediction/prediction.csv
 
   
