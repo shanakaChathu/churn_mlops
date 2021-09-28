@@ -44,4 +44,11 @@ stages:
     outs:
     - data/prediction/prediction.csv
 
-  
+  model_monitor:
+    cmd: python src/model_monitoring/model_monitor.py --config=params.yaml
+    deps:
+    - src/model_monitoring/model_monitor.py
+    - data/processed/churn_train.csv
+    - data/raw/test_week1.csv
+    outs:
+    - reports/data_and_target_drift_dashboard.html

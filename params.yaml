@@ -30,5 +30,8 @@ mlflow_config:
 prediction_data_config:
   prediction_data_csv: data/prediction/prediction.csv
   
+model_monitor:
+  target_col_name: target
+  monitor_dashboard_html: reports/data_and_target_drift_dashboard.html
 
 

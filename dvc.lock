@@ -77,3 +77,19 @@ stages:
     - path: data/prediction/prediction.csv
       md5: 27f3e3f6f5c60cb85caf66f568358bfa
       size: 61045
+  model_monitor:
+    cmd: python src/model_monitoring/model_monitor.py --config=params.yaml
+    deps:
+    - path: data/processed/churn_train.csv
+      md5: 5821af312e680407f3472f56e405e9bc
+      size: 219447
+    - path: data/raw/test_week1.csv
+      md5: 9fa5eb634e0fae0ea97554fbb4926827
+      size: 59063
+    - path: src/model_monitoring/model_monitor.py
+      md5: aed0cae3dba36bc8d854d941684440eb
+      size: 1916
+    outs:
+    - path: reports/data_and_target_drift_dashboard.html
+      md5: 674493e19b6e0a260e56fbac0054bad6
+      size: 7332825
